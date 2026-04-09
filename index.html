@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/images/favicon-32x32.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi-step form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=League+Spartan:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style/style.css">
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <main id="main" class="flex flex-col md:flex-row md:items-start md:justify-between md:flex gap-y-0 md:gap-x-14 mx-auto px-4 md:mt-16 rounded-xl md:shadow-[0_8px_24px_hsl(229,24%,87%)] w-full bg-transparent md:max-w-[900px] md:h-135 md:bg-(--color-white) pb-32 md:pb-0">
+      <section class="py-6 mt-4 rounded-lg md:h-full md:max-h-125 h-45 w-full md:w-full md:max-w-60 bg-[url(/images/bg-sidebar-mobile.svg)] md:bg-[url(/images/bg-sidebar-desktop.svg)] bg-cover bg-no-repeat">     
+        <div class="w-full flex md:flex-col items-center justify-center gap-x-4 md:gap-y-6 py-2">
+          <section class="section-fluid">
+            <span class="span-circle not-active" data-tab="0">1</span>
+            <div class="container-fluid">
+              <h3 class="h3">Step 1</h3>
+              <p class="paragraph">Your info</p>
+            </div>
+          </section>
+           <section class="section-fluid">
+            <span class="span-circle not-active" data-tab="1">2</span>
+            <div class="container-fluid">
+              <h3 class="h3">Step 2</h3>
+              <p class="paragraph">Select Plan</p>
+            </div>
+          </section>
+          <section class="section-fluid">
+            <span class="span-circle not-active" data-tab="2">3</span>
+            <div class="container-fluid">
+              <h3 class="h3">Step 3</h3>
+              <p class="paragraph">ADD-ONS</p>
+            </div>
+          </section>
+            <section class="section-fluid">
+            <span id="last-active" class="span-circle not-active" data-tab="3">4</span>
+            <div class="container-fluid">
+              <h3 class="h3">Step 4</h3>
+              <p class="paragraph">Summary</p>
+            </div>
+          </section>
+        </div>
+      </section>
+      <form class="section" data-id="0">
+        <h1 class="heading">Personal Info</h1>
+        <h2 class="text-secondary">Please provide your name, email address, and phone number.</h2>
+        <div class="flex flex-col gap-y-1 md:mt-6 md:max-w-[400px]">
+        <div class="wrapper-error">
+        <label for="name" class="label md:mt-8 mt-3">Name</label>
+        <p class="error-paragraph md:mt-6" id="name-error-paragraph"></p>
+        </div>
+        <input type="text" id="name" class="input max-w-[400px] md:max-w-full" name="name" placeholder="e.g. Stephen King">
+        <div class="wrapper-error">
+        <label for="email" class="label">Email</label>
+        <p class="error-paragraph" id="email-error-paragraph"></p>
+        </div>
+        <input type="email" id="email" class="input max-w-[400px] md:max-w-full" name="email" placeholder="e.g. stephenking@lorem.com">
+        <div class="wrapper-error">
+        <label for="phone" class="label">Phone</label>
+        <p class="error-paragraph" id="phone-error-paragraph"></p>
+        </div>
+        <input type="tel" pattern="^(?:\+40|0)[237][0-9]{8}$" id="phone" class="input max-w-[400px] md:max-w-full" name="phone" placeholder="e.g. 0741242469">
+        <section class="fixed z-50 bottom-[60px] left-0 w-full bg-(--color-white) md:bg-transparent md:static flex justify-end md:p-0 md:mt-1">
+        <button type="submit" class="btn-next">Next Step</button>
+        </section>
+      </div>
+    </form>
+    <section class="section" data-id="1" hidden>
+      <h3 class="heading">Select your plan</h3>
+      <p class="text-secondary">You have the option of monthly or yearly billing.</p>
+      <section class="flex w-full flex-col mb-1 md:flex-row md:gap-x-5 gap-y-3 md:mt-6 md:py-4 py-2">
+      <div class="box" tabindex="0" data-plantype="arcade">
+        <img src="/images/icon-arcade.svg" alt="Image with some arcade" class="image-box">
+        <div class="section-box">
+          <h3 class="heading text-sm">Arcade</h3>
+          <p class="text-secondary text-[11px]" data-monthly="9" data-yearly="108">$9/mo</p>
+          <p class="paragraph-down ascuns">2 months free</p>
+        </div>
+      </div>
+      <div class="box" tabindex="1" data-plantype="advanced">
+        <img src="/images/icon-advanced.svg" alt="Image with some arcade" class="image-box">
+        <div class="section-box">
+          <h3 class="heading text-sm">Advanced</h3>
+          <p class="text-secondary text-[11px]" data-monthly="12" data-yearly="144">$12/mo</p>
+          <p class="paragraph-down ascuns">2 months free</p>
+        </div>
+      </div>
+      <div class="box" data-plantype="pro" tabindex="2">
+        <img src="/images/icon-pro.svg" alt="Image with some arcade" class="image-box">
+        <div class="section-box">
+          <h3 class="heading text-sm">Pro</h3>
+          <p class="text-secondary text-[11px]" data-monthly="15" data-yearly="180">$15/mo</p>
+          <p class="paragraph-down ascuns">2 months free</p>
+        </div>
+      </div>
+      </section>
+      <p id="error-message-plan" class="error-paragraph"></p>
+      <div class="w-full mt-3 bg-(--color-blue-50) flex items-center justify-center gap-x-4 md:gap-x-7 md:max-w-[400px] rounded-xs py-3 min-h-[48px]">
+        <p class="heading text-sm">Monthly</p>
+        <label for="billing-toggle" class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="billing-toggle" class="sr-only peer">
+          <span class="w-11 h-6 bg-(--color-blue-950) peer-focus:outline-none peer-focus:ring-4 peer-focus:bg-(--color-blue-950) rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-(--color-blue-950)"></span>
+        </label>
+        <p class="heading text-sm">Yearly</p>
+      </div>
+      <section class="section-bottom-down">
+        <button type="button" class="btn-back">Go Back</button>
+        <button type="button" class="btn-next" id="btn-2">Next Step</button>
+      </section>
+    </section>
+    <section class="section" data-id="2" hidden>
+      <h3 class="heading text-3xl">Pick add-ons</h3>
+      <p class="text-secondary">Add-ons help enhance your gaming experience.</p>
+      <section class="flex w-full flex-col mb-1 md:gap-x-5 gap-y-3 md:mt-3 md:py-4 py-2">
+        <div class="section-addons">
+          <label for="addon-1" class="visually-hidden"> Choose something </label>
+          <input type="checkbox" name="addon" id="addon-1" class="form-control" data-functionality="Online service">
+          <div class="flex flex-col">
+            <h3 class="service-paragraph">Online service</h3>
+            <p class="information-paragraph">Access to multiplayer games</p>
+          </div>
+          <p class="price-paragraph" data-monthly="1" data-yearly="10">$1/mo</p>
+        </div>
+        <div class="section-addons">
+          <label for="addon-2" class="visually-hidden"> Choose something </label>
+          <input type="checkbox" name="addon" id="addon-2" class="form-control" data-functionality="Larger storage">
+          <div class="flex flex-col">
+            <h3 class="service-paragraph">Larger storage</h3>
+            <p class="information-paragraph">Extra 1TB of storage</p>
+          </div>
+          <p class="price-paragraph" data-monthly="2" data-yearly="20">$2/mo</p>
+        </div>
+        <div class="section-addons">
+          <label for="addon-3" class="visually-hidden"> Choose something </label>
+          <input type="checkbox" name="addon" id="addon-3" class="form-control" data-functionality="Customizable profile">
+          <div class="flex flex-col">
+            <h3 class="service-paragraph">Customizable profile</h3>
+            <p class="information-paragraph">Custom theme on your profile</p>
+          </div>
+          <p class="price-paragraph" data-monthly="2" data-yearly="20">$2/mo</p>
+        </div>
+      </section>
+      <section class="section-bottom-down">
+        <button type="button" class="btn-back">Go Back</button>
+        <button type="button" class="btn-next" id="btn-3">Next Step</button>
+      </section>
+    </section>
+    <section class="section" data-id="3" hidden>
+      <h3 class="heading text-3xl">Finishing up</h3>
+      <p class="text-secondary">Double-check everything looks OK before confirming.</p>
+      <div class="mt-4 px-5 py-3 rounded-2xl flex flex-col gap-y-2 bg-(--color-blue-50) w-full h-auto md:max-w-[400px]" id="parent-step4">
+        <section class="section-total border-b border-(--color-neutral-300) pb-3 mb-1" id="first-child">
+          <div class="max-w-full flex flex-col gap-y-1 md:gap-y-2">
+            <p id="step4-paragraph" class="paragraph-lead">Arcade(Monthly)</p>
+            <a href="#" id="change-section" class="link-change hover:text-(--color-purple-600) duration-300 transition-colors ease-out">Change</a>
+          </div>
+          <p id="value-step4-paragraph" class="paragraph-lead">$9/mo</p>
+        </section>
+        <!-- BLUE print for our section
+        <section class="section-total mt-3">
+            <p class="link-change no-underline">Online service</p>
+            <p class="paragraph-lead text-[12px] font-medium">+$1/mo</p>
+        </section>
+        <section class="section-total mt-1">
+            <p class="link-change no-underline">Larger storage</p>
+            <p class="paragraph-lead text-[12px] font-medium">+$2/mo</p>
+        </section>
+      -->
+        <div id="parent-child">
+          
+        </div>
+      </div>
+      <div class="mt-2 px-5 w-full md:max-w-[400px] flex items-center justify-between">
+        <p class="link-change no-underline" id="total-paragraph">Total(per month)</p>
+        <h3 class="text-[16px] text-(--color-purple-600) font-bold" id="total-paragraph-value">+12$/mo</h3>
+      </div>
+      <section class="section-bottom-down mt-auto pt-6 md:mt-10 pb-2 md:pb-0 flex items-center justify-between">
+        <button type="button" class="btn-back">Go Back</button>
+      <button type="button" class="btn-next bg-(--color-purple-600) hover:bg-(--color-purple-900) transition-colors duration-300 ease-in-out" id="btn-4">Confirm</button>
+      </section>
+    </section>
+    <section class="section" data-id="4" hidden>
+      <div class="section-thanks">
+        <img class="h-15" src="/images/icon-thank-you.svg" alt="Image with a thanking icon">
+        <h3 class="paragraph-lead text-3xl font-medium">Thank you!</h3>
+        <p class="link-change no-underline font-medium text-center text-balance text-sm">Thanks for confirming your subscription! We hope you have fun using our platform. If you ever need support, please feel free to email us at <a href="mailto:support@loremgaming.com" class="underline hover:text-purplish-blue transition-colors">support@loremgaming.com. </a></p>
+      </div>
+    </section>
+    </main>
+  </body>
+</html>
