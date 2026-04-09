@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+@import "tailwindcss";
+:root {
+  /* Primary */
+  --color-blue-950: hsl(213, 96%, 18%);
+  --color-purple-600: hsl(243, 100%, 62%);
+  --color-blue-300: hsl(228, 100%, 84%);
+  --color-blue-200: hsl(206, 94%, 87%);
+  --color-red-500: hsl(354, 84%, 57%);
+
+  /* Neutral */
+  --color-grey-500: hsl(231, 11%, 63%);
+  --color-purple-200: hsl(229, 24%, 87%);
+  --color-blue-100: hsl(218, 100%, 97%);
+  --color-blue-50: hsl(231, 100%, 99%);
+  --color-white: hsl(0, 100%, 100%);
+}
+@layer base{
+  body{
+    font-family: 'Ubuntu', sans-serif;
+    min-height: 100vh;
+    font-size: 16px;
+    background-color: var(--color-blue-100);
+    overflow-y: scroll;
+    @apply min-h-screen;
+  }
+  .toggle-circle{
+    position:absolute;
+    left:0;
+    top:0;
+    background-color: var(--color-blue-950);
+    width:100%;
+    height:10px;
+    max-width:75px;
+  }
+  .visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0); 
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap; 
+  width: 1px;
+}
+}
+@layer components{
+  .label{
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-blue-950);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  .input{
+    padding: 0.5rem;
+    border: 1px solid var(--color-purple-200);
+    padding-left:15px;
+    border-radius: 0.375rem;
+    background-color: var(--color-white);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-blue-950);
+    transition: border-color 0.3s ease, outline 0.3s ease;
+  }
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  input[type="tel"]::placeholder{
+    color: var(--color-grey-500);
+    font-weight: 500;
+  }
+  input:focus{
+   outline-offset: 2px;
+   outline: 2px solid var(--color-blue-300);
+   border: none;
+  }
+  .ascuns{
+    display: none !important;
+  }
+  .h3{
+    @apply hidden md:block text-sm font-light text-(--color-purple-200) uppercase;
+  }
+  .paragraph{
+    @apply hidden md:block uppercase text-sm text-(--color-white) font-medium;
+  }
+  .section-fluid{
+    @apply md:w-10/12 flex md:items-center gap-x-4;
+  }
+  .span-circle{
+    @apply w-8 h-8 cursor-pointer rounded-full mt-2 bg-(--color-blue-200) flex items-center justify-center border-white text-(--color-blue-950) font-medium;
+  }
+  .container-fluid{
+    @apply md:flex md:flex-col gap-x-2;
+  }
+  .not-active{
+    @apply bg-transparent border-1 text-(--color-white) font-medium;
+  }
+  .bordered{
+    @apply border-2 border-(--color-red-500);
+  }
+  .error-paragraph{
+    @apply text-[15px] text-(--color-red-500) font-medium ;
+  }
+  .wrapper-error{
+    @apply flex items-center justify-between max-w-[400px] md:max-w-full;
+  }
+  .heading{
+    @apply text-2xl font-bold text-(--color-blue-950);
+  }
+  .text-secondary{
+    @apply text-sm text-(--color-grey-500) font-medium max-w-[250px] md:max-w-none;
+  }
+  .section{
+    @apply mt-[-60px] md:mt-0 md:w-full w-[92%] max-w-[500px] mx-auto md:mx-0 rounded-xl md:rounded-none md:max-w-none h-100 md:h-auto bg-(--color-white) md:bg-transparent flex flex-col gap-y-3 md:gap-y-2 md:px-6 md:py-12 py-5 px-8;
+  }
+  .box{
+    @apply w-full md:max-w-[115px] md:h-32 pt-4 md:pt-0 gap-x-3 flex md:block h-20 rounded-2xl border-2 border-(--color-purple-200) hover:cursor-pointer hover:border-2 hover:bg-(--color-blue-50) hover:border-(--color-blue-950) transition-all duration-300 ease-in-out;
+  }
+  .image-box{
+    @apply md:h-12 h-8 mt-0 md:mt-2 px-3 md:px-3 md:py-2;
+  }
+  .section-box{
+    @apply w-full flex-col md:flex-row md:gap-x-4 md:mt-4 md:px-3;
+  }
+  .btn-next{
+    @apply px-2 py-3 mr-10 md:mr-0 bg-(--color-blue-950) cursor-pointer w-full ml-auto max-w-[125px] rounded-sm text-white font-medium mt-3 hover:bg-(--color-blue-600) transition-colors duration-300 ease-in-out;
+  }
+  .paragraph-down{
+    @apply text-[10px] font-medium text-(--color-blue-950) ;
+  }
+  .btn-back{
+    @apply cursor-pointer text-sm text-(--color-grey-500) font-medium ml-10 md:ml-0 px-1;
+  }
+  .selected{
+    @apply border-2 border-(--color-blue-300);
+  }
+  .section-addons{
+    @apply w-full h-18 hover:cursor-pointer hover:border-(--color-blue-600) transition-all duration-300 ease-in-out rounded-2xl border-2 px-4 py-3 gap-x-5 flex items-center border-(--color-blue-100) md:max-w-[400px] max-w-[350px];
+  }
+  .service-paragraph{
+    @apply text-sm text-(--color-blue) font-medium;
+  }
+  .information-paragraph{
+    @apply text-sm text-(--color-grey-500);
+  }
+  .price-paragraph{
+    @apply ml-auto text-sm text-(--color-purple-600) font-medium;
+  }
+  .section-bottom-down{
+    @apply fixed z-50 bottom-[60px] left-0 w-full bg-(--color-white) md:bg-transparent md:max-w-[400px] md:static flex justify-between md:p-0 md:mt-10;
+  }
+  .form-control{
+    @apply w-6 h-5 cursor-pointer accent-purple-600 rounded border-gray-300;
+  }
+  .paragraph-lead{
+    @apply text-sm text-(--color-blue-950) font-medium;
+  }
+  .link-change{
+    @apply text-sm md:text-(--color-purple-200) text-(--color-grey-500) font-medium underline;
+  }
+  .section-total{
+    @apply max-w-full flex justify-between items-center;
+  }
+  .disabled{
+    @apply pointer-events-none;
+  }
+  .section-thanks{
+    @apply w-full flex flex-col gap-y-4 md:gap-y-6 justify-center items-center py-16 mt-5;
+  }
+}
