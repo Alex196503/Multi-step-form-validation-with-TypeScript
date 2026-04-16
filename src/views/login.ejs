@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> functionality</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+<body>
+      <% if(messages && messages.error &&  messages.error.length > 0) { %>
+        <div class="alert alert-danger">
+          <%= messages.error %>
+        </div>
+        <% } %>
+    <div class="container">
+    <p class="h5 mt-5 text-left">Login</p>
+    </div>
+    <form action="/login" method="POST">
+  <div class="container d-flex flex-column mt-5 mb-4">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" name="email" id="exampleInputEmail1" required aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div class="container">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" name="password" class="form-control" required id="exampleInputPassword1">
+  </div>
+  <div class="container">
+  <button type="submit" class="btn btn-primary mt-3 mx-auto">Submit</button>
+  </div>
+</form>
+<div class="container mt-4">
+<p><a href="/register" class="link-underline-primary">Do not have an account? Go back to register!</a></p>
+</div>
+</body>
+</html>

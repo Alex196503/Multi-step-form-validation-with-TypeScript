@@ -1,5 +1,3 @@
-import type { formData, globalData } from "../types";
-
 export function visualizeFormErrors(nameInput : HTMLInputElement, errorNameParagraph : HTMLParagraphElement, emailInput : HTMLInputElement, phoneInput : HTMLInputElement, errorEmailParagraph : HTMLParagraphElement, errorPhoneParagraph : HTMLParagraphElement )
 {
     let emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
@@ -44,27 +42,4 @@ export function updateCircles(spanCircles:NodeListOf<HTMLSpanElement>,  count : 
         {
             spanCircles.forEach((span)=>span.classList.add('disabled'));
         }
-}
-
-export function saveDataToLocalStorage(globalData: globalData, nameInput: HTMLInputElement, emailInput: HTMLInputElement, phoneInput: HTMLInputElement)
-{
-    globalData.personalInfo = {
-        name: nameInput!.value,
-        email: emailInput!.value,
-        phone: phoneInput!.value
-        }
-        if(globalData.personalInfo){
-        localStorage.setItem('personal-info', JSON.stringify(globalData.personalInfo));
-    }
-}
-export function loadPersistedData(nameInput: HTMLInputElement, emailInput: HTMLInputElement, phoneInput : HTMLInputElement)
-{
-    let savedDataStep1 = localStorage.getItem('personal-info');
-    if(savedDataStep1)
-    {
-        let parsed = JSON.parse(savedDataStep1) as formData;
-        nameInput!.value = parsed.name;
-        emailInput!.value = parsed.email;
-        phoneInput!.value = parsed.phone;
-    }
 }

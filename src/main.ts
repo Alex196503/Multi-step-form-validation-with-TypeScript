@@ -1,15 +1,23 @@
-import { loadPersistedData, saveDataToLocalStorage, updateCircles, updateUi, visualizeFormErrors } from './steps/firststepandutils';
+import { logOut } from './utils/logoutFromFrontend';
+import { updateCircles, updateUi, visualizeFormErrors } from './steps/firststepandutils';
 import renderOrderSummary, { calculateTotal, createAddonRow } from './steps/fourthstep';
 import toggleBoxes, { changeRecurrencyState, hydrateStep2Dates, updateStep2Variables, visualizeStep2Errors } from './steps/secondstep';
 import storeAddonsChosen, { hydrateDataStep3, updateAddonPrices } from './steps/thirdstep';
+
 import './style/style.css';
-import type { addonsNames, globalData, planChoice } from './types';
-document.addEventListener('DOMContentLoaded', () => {
-    /* local storage salvare date 3 addons in local storage maine logica e aceiasi + commit + stripe  local storage pt ux, baza de date pt comanda finalizata si datele de plata */  
-    let spanCircles = document.querySelectorAll<HTMLSpanElement>('.span-circle');
+import type { addonsNames, globalData, planChoice, UserAuthentificated } from './types';
+import { confirmAndSaveOrder, fetchData } from './utils/fetchingData';
+// vezi cu orderId maine orderId sa afiseze comanda la confirm + da ii push branch si stripe maine integrare 
+document.addEventListener('DOMContentLoaded', async() => {
     let nameInput = document.querySelector<HTMLInputElement>('#name');
     let emailInput = document.querySelector<HTMLInputElement>('#email');
     let phoneInput = document.querySelector<HTMLInputElement>('#phone');
+    // function that brings some data from the backend to the client
+    let userAuthentificated : UserAuthentificated = {name: '', email: '', phone: ''};
+    if(nameInput && emailInput && phoneInput){
+    await fetchData(userAuthentificated, nameInput, emailInput, phoneInput);
+    }
+    let spanCircles = document.querySelectorAll<HTMLSpanElement>('.span-circle');
     let errorNameParagraph = document.querySelector<HTMLParagraphElement>('#name-error-paragraph');
     let errorEmailParagraph = document.querySelector<HTMLParagraphElement>('#email-error-paragraph');
     let errorPhoneParagraph = document.querySelector<HTMLParagraphElement>('#phone-error-paragraph');
@@ -24,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let btnsBack = document.querySelectorAll<HTMLButtonElement>('.btn-back');
     let btnStep2 = document.querySelector<HTMLButtonElement>('#btn-2');
     let btnStep3 = document.querySelector<HTMLButtonElement>('#btn-3');
+    let btnConfirm = document.querySelector<HTMLButtonElement>('#btn-4');
     let priceParagraphs = document.querySelectorAll<HTMLParagraphElement>('.price-paragraph');
     let checkboxAddons = document.querySelectorAll<HTMLInputElement>('.form-control');
     let step4Paragraph = document.querySelector<HTMLParagraphElement>('#step4-paragraph');
@@ -31,9 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalParagraph = document.querySelector<HTMLParagraphElement>('#total-paragraph');
     let totalParagraphValue = document.querySelector<HTMLParagraphElement>('#total-paragraph-value');
     let step4valueParagraph = document.querySelector<HTMLParagraphElement>('#value-step4-paragraph');
+    const logoutBtn = document.querySelector<HTMLButtonElement>('#btn-logout');
+    let confirmMessage = document.querySelector<HTMLParagraphElement>('#confirm-message');
     let addons :Set <addonsNames> = new Set();
     let count = 0;
     let total = 0;
+    let totalPriceSaved = 0;
     let packagePrice : number;
     let globalData : globalData  = {};
     let arrayPrices : number[] = [];
@@ -46,10 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
         yearly: {'Online service': 10, 'Larger storage': 20, 'Customizable profile': 20}
     };
     let sectionTabs = document.querySelectorAll<HTMLDivElement>('.section');
-    /* load persisted data from the local storage */
-    if(emailInput && phoneInput && nameInput){
-    loadPersistedData(nameInput, emailInput, phoneInput);
-    }
+    
+    /* logout handler */
+    logoutBtn?.addEventListener('click', async()=>{
+        await logOut();
+    })
+    /* function that confirms the order and sends it to our mongodb database */
+    btnConfirm?.addEventListener('click', async()=>{      
+        if(confirmMessage){
+       confirmAndSaveOrder(globalData, totalPriceSaved, confirmMessage)
+        }
+    })
     /* listeners for going back to a previous step or going to the next step */
     updateCircles(spanCircles, count);
     btnsNext.forEach((btn)=>{
@@ -62,10 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 0:
                         let isStepValid1 = visualizeFormErrors(nameInput as HTMLInputElement, errorNameParagraph as HTMLParagraphElement, emailInput as HTMLInputElement, phoneInput as HTMLInputElement, errorEmailParagraph as HTMLParagraphElement, errorPhoneParagraph as HTMLParagraphElement);
                         if(!isStepValid1) return;
-                        if(nameInput && emailInput && phoneInput){
-                            /* save data to local storage function */
-                        saveDataToLocalStorage(globalData, nameInput, emailInput, phoneInput)
-                        }
                         break;
                     case 1:
                         let isStepValid2 = visualizeStep2Errors(boxes, errorPlanParagraph as HTMLParagraphElement);
@@ -96,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUi(sectionTabs, count);
         updateCircles(spanCircles, count);
     })
-    spanCircles.forEach((span)=>{
+        spanCircles.forEach((span)=>{
         span.addEventListener('click', ()=>{
            let target = Number(span.dataset.tab);
            if(target <= count)
@@ -127,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(errorPlanParagraph){
        visualizeStep2Errors(boxes, errorPlanParagraph)
         }
-    })
+    })    
     /* Listeners for updating step2 and step3 states*/
     btnStep2?.addEventListener('click', ()=>{
         if(checkbox){
@@ -138,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAddonPrices(priceParagraphs as NodeListOf<HTMLParagraphElement>, globalData as globalData)
     }) 
     let localDataStep2 = localStorage.getItem('personal-plan');
-    if(localDataStep2 && checkbox)
+    if(localDataStep2!== 'undefined' && localDataStep2 && checkbox)
     {
         hydrateStep2Dates(localDataStep2, boxes, checkbox, globalData, boxParagraphs, promoTexts)
     }    
@@ -162,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         if(totalParagraphValue){
-        calculateTotal(arrayPrices, packagePrice, totalParagraphValue, total, sufix)
+         totalPriceSaved = (calculateTotal(arrayPrices, packagePrice, totalParagraphValue, total, sufix));
         }
     })   
 })
