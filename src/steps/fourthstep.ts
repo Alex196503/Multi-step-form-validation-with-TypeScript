@@ -32,4 +32,5 @@ export function calculateTotal(arrayPrices : number[], packagePrice : number, to
         total = packagePrice + addonsSum;
         totalParagraphValue.textContent = `$${total}/${sufix}`;
     }
+    return total;
 }

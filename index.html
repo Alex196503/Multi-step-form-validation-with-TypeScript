@@ -65,7 +65,8 @@
         </div>
         <input type="tel" pattern="^(?:\+40|0)[237][0-9]{8}$" id="phone" class="input max-w-[400px] md:max-w-full" name="phone" placeholder="e.g. 0741242469">
         <section class="fixed z-50 bottom-[60px] left-0 w-full bg-(--color-white) md:bg-transparent md:static flex justify-end md:p-0 md:mt-1">
-        <button type="submit" class="btn-next">Next Step</button>
+          <button type="button" id="btn-logout" class="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-2 py-3 rounded-lg transition-colors text-sm font-medium shadow-md">Log out</button>
+          <button type="button" class="btn-next">Next Step</button>
         </section>
       </div>
     </form>
@@ -187,7 +188,7 @@
       <div class="section-thanks">
         <img class="h-15" src="/images/icon-thank-you.svg" alt="Image with a thanking icon">
         <h3 class="paragraph-lead text-3xl font-medium">Thank you!</h3>
-        <p class="link-change no-underline font-medium text-center text-balance text-sm">Thanks for confirming your subscription! We hope you have fun using our platform. If you ever need support, please feel free to email us at <a href="mailto:support@loremgaming.com" class="underline hover:text-purplish-blue transition-colors">support@loremgaming.com. </a></p>
+        <p class="link-change no-underline font-medium text-center text-balance text-sm" id="confirm-message"></p>
       </div>
     </section>
     </main>

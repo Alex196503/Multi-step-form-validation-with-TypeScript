@@ -12,4 +12,26 @@ export interface globalData {
     addsOn? : addonsNames[],
     personalInfo?: formData
 }
-export type addonsNames = 'Online service' | 'Larger storage' | 'Customizable profile'
+export type User = {
+    id: string,
+    name: string,
+    email : string,
+    phone : string,
+    password: string
+}
+export type UserAuthentificated = {
+    name : string,
+    email : string,
+    phone : string
+};
+export type addonsNames = 'Online service' | 'Larger storage' | 'Customizable profile';
+
+export interface OrderRequest {
+    addons : addonsNames[],
+    planBilling: 'monthly' | 'yearly',
+    planType : string,
+    totalPrice : number
+}
+export interface OrderResponse {
+    orderId : string
+};
