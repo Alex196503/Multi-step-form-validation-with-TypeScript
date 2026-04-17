@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=League+Spartan:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/success/success.ts"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+    :root {
+    /* Primary */
+    --color-blue-950: hsl(213, 96%, 18%);
+    --color-purple-600: hsl(243, 100%, 62%);
+    --color-blue-300: hsl(228, 100%, 84%);
+    --color-blue-200: hsl(206, 94%, 87%);
+    --color-red-500: hsl(354, 84%, 57%);
+
+    /* Neutral */
+    --color-grey-500: hsl(231, 11%, 63%);
+    --color-purple-200: hsl(229, 24%, 87%);
+    --color-blue-100: hsl(218, 100%, 97%);
+    --color-blue-50: hsl(231, 100%, 99%);
+    --color-white: hsl(0, 100%, 100%);
+    }
+    body{
+    font-family: 'Ubuntu', sans-serif;
+    min-height: 100vh;
+    font-size: 16px;
+    background-color: var(--color-white);
+    overflow-y: scroll;
+    }
+    #final-paragraph{
+        color: var(--color-purple-600) !important;
+    }
+    #thank-you{
+        color: var(--color-blue-950) !important;
+    }
+    #confirm-paragraph{
+        color: var(--color-purple-200) !important;
+    }
+    </style>
+</head>
+<body>
+    <main id="main" class="flex flex-col md:flex-row md:items-start md:justify-between md:flex gap-y-0 md:gap-x-14 mx-auto px-4 md:mt-16 rounded-xl md:shadow-[0_8px_24px_hsl(229,24%,87%)] w-full bg-transparent md:max-w-[900px] md:h-135 md:bg-(--color-white) pb-32 md:pb-0">
+     <section class="mt-[-60px] md:mt-0 md:w-full w-[92%] max-w-[500px] mx-auto md:mx-0 rounded-xl md:rounded-none md:max-w-none h-100 md:h-auto bg-(--color-white) md:bg-transparent flex flex-col gap-y-3 md:gap-y-2 md:px-6 md:py-12 py-5 px-8" data-id="4">
+      <div class="w-full flex flex-col gap-y-4 md:gap-y-6 justify-center items-center py-16 mt-5">
+        <img class="h-15" src="/images/icon-thank-you.svg" alt="Image with a thanking icon">
+        <h3 id="thank-you" class="text-3xl font-medium">Thank you!</h3>
+        <p class="text-sm no-underline font-medium text-center text-balance" id="confirm-message">Your order with number <span class="underline font-medium" id="order-message"></span> was succesfully registered! We hope you have fun using our platform. If you ever need support, please feel free to email us at <a href="mailto:support@loremgaming.com" class="underline hover:text-purplish-blue transition-colors">support@loremgaming.com. </a></p>
+      </div>
+      <section class="w-full bg-(--color-white) md:bg-transparent md:static flex justify-between items-center md:p-0 md:mt-1">
+      <a href="/confirm" id="final-paragraph" class="font-medium hover:underline text-center">Go back to the main page</a>
+      <a href="orders.html" class="text-blue-500 no-underline hover:underline hover:text-blue-700">View your orders</a>
+    </section>
+    </section>
+    </main>
+</body>
+</html>

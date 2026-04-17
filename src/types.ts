@@ -35,3 +35,16 @@ export interface OrderRequest {
 export interface OrderResponse {
     orderId : string
 };
+export interface StripeResponse{
+    url : string
+};
+// Mirror of OrderRequest but using database schema naming conventions
+export interface OrderResponseFromDB extends OrderRequest{
+    orderedAt : string,
+    selectedPlan : string,
+    billingInterval : 'monthly' | 'yearly',
+    selectedAddons?: addonsNames[]
+}
+export interface OrdersResponseApi{
+    orders: OrderResponseFromDB[]
+}

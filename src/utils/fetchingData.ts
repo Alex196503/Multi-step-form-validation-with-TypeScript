@@ -1,4 +1,4 @@
-import type { globalData, OrderResponse, UserAuthentificated } from "../types";
+import type { globalData, OrderResponse, StripeResponse, UserAuthentificated } from "../types";
 
 export async function fetchData(userAuthentificated: UserAuthentificated, nameInput: HTMLInputElement, emailInput: HTMLInputElement, phoneInput: HTMLInputElement)
     {try{
@@ -29,7 +29,7 @@ const sleep  = (ms : number) => {
 export async function confirmAndSaveOrder(globalData: globalData, totalPriceSaved : number, confirmMessage: HTMLParagraphElement)
 {
  try{      
-        confirmMessage.innerHTML = 'Your order is processing...';    
+        confirmMessage.innerHTML = 'Your order is processing...';
         let data = await fetch('/api/order',{
             method: 'POST',
             headers:{
@@ -42,11 +42,13 @@ export async function confirmAndSaveOrder(globalData: globalData, totalPriceSave
                 totalPrice : totalPriceSaved
             })
         }) 
-        await sleep(1000);
+        await sleep(800);
         if(data.ok){
         let Order : OrderResponse = await data.json();
-        confirmMessage.innerHTML = `Your order with number ${Order!.orderId} was succesfully registered! We hope you have fun using our platform. If you ever need support, please feel free to email us at <a href="mailto:support@loremgaming.com" class="underline hover:text-purplish-blue transition-colors">support@loremgaming.com. </a>`;
+        if(Order.orderId){
+        redirectUserToPayment(Order.orderId);
         }
+    }
         else
         {
             confirmMessage.innerText = "There was a problem saving your order. Please try again.";
@@ -56,4 +58,30 @@ export async function confirmAndSaveOrder(globalData: globalData, totalPriceSave
         {
             console.log("Something bad happened!" + e);
         }
-    }     
+}
+async function redirectUserToPayment(orderId : string)
+{
+    try{
+    let req = await fetch(`/api/create/checkout/session/${orderId}`, {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    });
+    if(!req.ok)
+    {
+        throw new Error('Failed to create the Stripe session');
+    }
+    let data : StripeResponse = await req.json();
+    if(data.url)
+    {
+        window.location.href = data.url;
+    }
+    else{
+        console.error('Something bad happened while bringing the url!'); 
+    }
+    }catch(error)
+    {
+        console.error(`Something bad happened! ${error}`);
+    }
+}     
