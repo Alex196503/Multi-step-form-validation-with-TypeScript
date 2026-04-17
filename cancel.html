@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=League+Spartan:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-blue-950: hsl(213, 96%, 18%);
+            --color-purple-600: hsl(243, 100%, 62%);
+            --color-red-500: hsl(354, 84%, 57%);
+            --color-grey-500: hsl(231, 11%, 63%);
+            --color-blue-100: hsl(218, 100%, 97%);
+            --color-white: hsl(0, 100%, 100%);
+        }
+        body {
+            font-family: 'Ubuntu', sans-serif !important;
+            background-color: var(--color-blue-100) !important;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        #status-title { color: var(--color-red-500); }
+        #status-message { color: var(--color-grey-500); }
+        #back-link { color: var(--color-blue-950); }
+    </style>
+</head>
+<body>
+    <main id="main" class="flex flex-col items-center justify-center mx-auto px-4 rounded-xl md:shadow-[0_8px_24px_hsl(229,24%,87%)] w-full bg-[var(--color-white)] md:max-w-[700px] py-16">
+        <div class="bg-red-50 p-5 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-[var(--color-red-500)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <h3 id="status-title" class="text-3xl font-bold mb-4">Order Cancelled</h3>
+        <p id="status-message" class="text-base font-medium leading-relaxed">It's okay! Your payment was not processed and your card was not charged. Maybe you just need a moment to think it over? We're here whenever you're ready to come back.</p>
+        <div class="flex flex-col gap-y-4 w-full mt-4">
+            <a href="/confirm" id="back-link" class="font-bold hover:underline text-center">Return to Homepage</a>
+        </div>
+    </main>
+</body>
+</html>

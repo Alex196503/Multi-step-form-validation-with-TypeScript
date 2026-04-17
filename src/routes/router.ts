@@ -1,6 +1,7 @@
 import express from 'express';
 import type {NextFunction, Request, Response} from 'express';
 import bcrypt from 'bcrypt';
+import Stripe from 'stripe';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import passport from 'passport';
@@ -10,6 +11,12 @@ import { UserModel } from '../models/User';
 import { type User, type OrderRequest } from '../types';
 import { OrderModel } from '../models/Order';
 const router = express.Router();
+let stripe = null;
+/* vercel deploy la final vezi acolo intreaba localhost vezi baza de date etc */
+if(process.env.STRIPE_KEY)
+{
+    stripe = new Stripe(process.env.STRIPE_KEY);
+}
 // front-end path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,5 +124,57 @@ router.get('/api/user',ensureAuthentification, (req: Request, res: Response)=>{
         email:user.email,
         phone:user.phone
     });
+})
+router.post('/api/create/checkout/session/:id', ensureAuthentification, async(req:Request, res:Response)=>{
+    try{
+        let orderId = req.params.id as string;
+        let orderExists = await OrderModel.findOne({_id : orderId});
+        if(!orderExists)
+        {
+            return res.status(404).json({message: `Order with the id ${orderId} not found!`});
+        }
+        let totalPrice = orderExists.totalPrice as number;
+        let planChosen = orderExists.selectedPlan;
+        const user = req.user as Omit <User, 'password'>;
+        if(stripe && req.user && planChosen)
+        {
+            const session = await stripe.checkout.sessions.create({
+                customer_email: user.email,
+                mode: "payment",
+                payment_method_types:['card'],
+                metadata:{
+                    order_id: orderId
+                },
+                line_items:[
+                    {
+                        price_data:{
+                            currency: 'usd',
+                            product_data:{
+                                name: planChosen.charAt(0).toUpperCase() + planChosen.slice(1)
+                            },
+                            unit_amount: totalPrice * 100,
+                        },
+                        quantity: 1
+                    }
+                ],
+                success_url: `${process.env.SERVER_URL}/success.html?orderId=${orderId}`,
+                cancel_url: `${process.env.SERVER_URL}/cancel.html`
+            })
+            return res.json({url : session.url});
+        }
+    }catch(err)
+    {
+        return res.status(500).json({message: err});
+    }
+})
+router.post('/api/orders', ensureAuthentification, async(req: Request, res: Response)=>{
+    const user = req.user as Omit<User, 'password'>;
+    try{
+    let orders = await OrderModel.find({UserId: user.id});
+    return res.status(200).json({orders});
+    }catch(err)
+    {
+        return res.status(500).json({message: `Something bad happened! ${err}`});
+    }
 })
 export {router};

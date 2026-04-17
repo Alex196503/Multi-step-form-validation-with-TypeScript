@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders page</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=League+Spartan:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <script type="module" src="src/success/orders.ts"></script>
+<style>
+    body{
+    font-family: 'Ubuntu', sans-serif;
+    min-height: 100vh;
+    font-size: 16px;
+    background-color:#f8f9fe;
+    }
+    .main-container {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+    tr th{
+        color:#022959;
+    }
+</style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <main id="main" class="main-container bg-white w-full max-w-[900px] rounded-xl p-6 md:p-10 flex flex-col gap-6">
+        <section class="flex flex-col gap-2">
+            <h1 class="text-2xl md:text-3xl font-bold text-[#022959]">Your Orders</h1>
+            <p class="text-gray-400">Review your past transactions and active plans.</p>
+        </section>
+        <section class="overflow-x-auto border border-gray-100 rounded-lg">
+        <table class="w-full text-left border-collapse">
+        <thead class="bg-[#f8f9fe] border-b border-gray-100">
+            <tr>
+                <th class="px-6 py-3 font-medium">Plan selected</th>
+                <th class="px-6 py-3 font-medium">Billing interval</th>
+                <th class="px-6 py-3 font-medium">Selected addons</th>
+                <th class="px-6 py-3 font-medium">Ordered at</th>
+                <th class="px-6 py-3 font-medium">Total price</th>
+            </tr>
+        </thead>
+        <tbody id="orders-body" class="divide-y divide-gray-50">
+            <tr class="hover:bg-blue-50/30 transition-colors">
+                <td class="px-6 py-4 text-sm font-bold text-[#022959]">Pro Plan</td>
+                <td class="px-6 py-4 text-sm text-[#483eff] font-medium">Monthly</td>
+                <td class="px-6 py-4 text-xs text-gray-500">Online Service, Storage</td>
+                <td class="px-6 py-4 text-sm text-gray-400">12 Oct 2023</td>
+                <td class="px-6 py-4 text-sm font-bold text-[#022959]">$15.00</td>
+            </tr>
+        </tbody>
+        </table> 
+        </section>  
+        <a href="/confirm" class="text-gray-400 font-medium hover:text-[#022959] transition-colors flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+        Go back to home
+        </a>
+    </main>
+</body>
+</html>
