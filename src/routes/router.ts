@@ -10,6 +10,7 @@ import { loginSchema, registerSchema } from '../auth-utils/validation';
 import { UserModel } from '../models/User';
 import { type User, type OrderRequest } from '../types';
 import { OrderModel } from '../models/Order';
+import sendEmailNotification from '../mail/mailer-config';
 const router = express.Router();
 let stripe = null;
 /* vercel deploy la final vezi acolo intreaba localhost vezi baza de date etc */
@@ -21,6 +22,7 @@ if(process.env.STRIPE_KEY)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.join(__dirname, '../../dist');
+let stripeWebhook = process.env.STRIPE_WEBHOOK_SECRET;
 router.get('/register', ensureNotAuthentificated, (_req: Request, res: Response)=>{
     res.render('register', {title: 'Register'});
 });
@@ -140,7 +142,7 @@ router.post('/api/create/checkout/session/:id', ensureAuthentification, async(re
         {
             const session = await stripe.checkout.sessions.create({
                 customer_email: user.email,
-                mode: "payment",
+                mode: 'payment',
                 payment_method_types:['card'],
                 metadata:{
                     order_id: orderId
@@ -158,7 +160,7 @@ router.post('/api/create/checkout/session/:id', ensureAuthentification, async(re
                     }
                 ],
                 success_url: `${process.env.SERVER_URL}/success.html?orderId=${orderId}`,
-                cancel_url: `${process.env.SERVER_URL}/cancel.html`
+                cancel_url: `${process.env.SERVER_URL}/cancel.html?orderId=${orderId}`,
             })
             return res.json({url : session.url});
         }
@@ -170,11 +172,93 @@ router.post('/api/create/checkout/session/:id', ensureAuthentification, async(re
 router.post('/api/orders', ensureAuthentification, async(req: Request, res: Response)=>{
     const user = req.user as Omit<User, 'password'>;
     try{
-    let orders = await OrderModel.find({UserId: user.id});
+    let orders = await OrderModel.find({UserId: user.id}).sort({orderedAt: -1});
     return res.status(200).json({orders});
     }catch(err)
     {
         return res.status(500).json({message: `Something bad happened! ${err}`});
     }
 })
+router.post('/api/cancel-order',ensureAuthentification, async(req: Request, res: Response)=>{
+    let {order_id} = req.body;
+    if(!order_id)
+    {
+        return res.status(400).json({message: 'Order id not found'});
+    }
+    try{
+        await OrderModel.findByIdAndUpdate(order_id, {status: 'failed'});
+        return res.status(200).json({message: `Order with the id: ${order_id} has been updated!`});
+    }
+    catch(err)
+    {
+        return res.status(500).json({message: `Something bad happened during the process! ${err}`});
+    }
+})
+router.post('/api/webhook', express.raw({type: 'application/json'}), async(req : Request, res : Response)=>{
+    if(stripeWebhook)
+    {
+        const signature = req.headers['stripe-signature'];
+        if(!signature)
+        {
+            return res.status(400).json({message: 'Signature missing!'});
+        }
+        try{
+            let event;
+            if(signature && req.body){
+            event = stripe?.webhooks.constructEvent(
+                req.body,
+                signature,
+                stripeWebhook)
+            }
+            switch(event?.type){
+                case "checkout.session.completed":
+                case "checkout.session.async_payment_succeeded":
+                const checkoutSession = event.data.object;                
+                if(checkoutSession.metadata){
+                    await OrderModel.findByIdAndUpdate(checkoutSession.metadata.order_id, {status: 'completed'});
+                    console.log(`Payment successful for`, checkoutSession.metadata.order_id);
+                }
+
+                let customerEmail = checkoutSession.customer_email;
+                let paymentIntentId = checkoutSession.payment_intent;
+                if(paymentIntentId && typeof paymentIntentId === "string"){
+                const paymentIntent = await stripe?.paymentIntents.retrieve(paymentIntentId);
+                const chargeId = paymentIntent?.latest_charge;
+                if(chargeId && typeof chargeId === "string")
+                {
+                const charge = await stripe?.charges.retrieve(chargeId);
+                let chargeReceipt = charge?.receipt_url;
+                if(customerEmail && chargeReceipt)
+                {
+                    let text = `Thank you so much for your purchase! Download your receipt from here ${chargeReceipt}`
+                    await sendEmailNotification(customerEmail, 'Your invoice', text);
+                }
+                }
+                }
+                break;
+                case "checkout.session.async_payment_failed":
+                case "checkout.session.expired":
+                const session = event.data.object;
+                if(session.metadata)
+                {
+                    await OrderModel.findByIdAndUpdate(session.metadata.order_id, {status: 'failed'});
+                    let customerEmail = session.customer_email;
+                    console.log(`Payment failed for the order`, session.metadata.order_id);
+                    if(customerEmail)
+                        {
+                            await sendEmailNotification(customerEmail, 'Your purchase', 'It looks like your purchase was cancelled or not finalised!');
+                        } 
+                }
+                break;
+                default:
+                    console.log(`Unhandled event type ${event?.type}`);
+            }
+            return res.json({received : true});
+        }catch(err)
+        {
+            return res.status(400).json({message: `Something bad occured during the process ${err}`});
+        }
+    }
+})
+
 export {router};

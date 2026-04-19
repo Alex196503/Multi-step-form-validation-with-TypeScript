@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async()=>{
             <td class="px-6 py-4 text-sm font-bold text-[#022959]">${order.selectedPlan}</td>
             <td class="px-6 py-4 text-sm text-[#483eff] font-medium">${order.billingInterval || 'Monthly'}</td>
             <td class="px-6 py-4 text-xs text-gray-500">${order.selectedAddons?.join(', ') || 'No selected addons'}</td>
+            <td class="px-6 py-4 text-xs text-blue-950">${order.status || 'Pending'}</td>
             <td class="px-6 py-4 text-sm text-gray-400">${orderDate}</td>
             <td class="px-6 py-4 text-sm font-bold text-[#022959]">${order.totalPrice}</td>
             `
@@ -45,4 +46,3 @@ document.addEventListener('DOMContentLoaded', async()=>{
     }
     }
 })
-/* webhook -  */

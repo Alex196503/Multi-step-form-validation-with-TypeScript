@@ -43,7 +43,8 @@ export interface OrderResponseFromDB extends OrderRequest{
     orderedAt : string,
     selectedPlan : string,
     billingInterval : 'monthly' | 'yearly',
-    selectedAddons?: addonsNames[]
+    selectedAddons?: addonsNames[],
+    status: string
 }
 export interface OrdersResponseApi{
     orders: OrderResponseFromDB[]

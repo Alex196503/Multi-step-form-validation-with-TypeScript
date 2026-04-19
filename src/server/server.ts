@@ -13,8 +13,27 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// middleware so we can use the stripe webhook, which requires raw body 
+const jsonParser = express.json();
+const urlParser = express.urlencoded({extended: true});
+app.use((req: Request, res: Response, next: NextFunction)=>{
+    if(req.originalUrl === "/api/webhook")
+    {
+        next();
+    }
+    else{
+        jsonParser(req, res, next);
+    }
+})
+app.use((req: Request, res: Response, next: NextFunction)=>{
+    if(req.originalUrl === "/api/webhook")
+    {
+        next();
+    }
+    else{
+        urlParser(req, res, next);
+    }
+})
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(flash());
 app.use(session({secret: process.env.SECRET_KEY || 'keyboard_cat_default_secret',

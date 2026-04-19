@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=League+Spartan:wght@100..900&family=Manrope:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@100..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <style>
+    <script type="module" src="/src/handlers/cancel.ts"></script>
+<style>
         :root {
             --color-blue-950: hsl(213, 96%, 18%);
             --color-purple-600: hsl(243, 100%, 62%);
@@ -38,7 +39,7 @@
             </svg>
         </div>
         <h3 id="status-title" class="text-3xl font-bold mb-4">Order Cancelled</h3>
-        <p id="status-message" class="text-base font-medium leading-relaxed">It's okay! Your payment was not processed and your card was not charged. Maybe you just need a moment to think it over? We're here whenever you're ready to come back.</p>
+        <p id="status-message" class="text-base font-medium leading-relaxed">It's okay! Your order with the id <span class="order-span"> </span> was not processed and your card was not charged. Maybe you just need a moment to think it over? We're here whenever you're ready to come back.</p>
         <div class="flex flex-col gap-y-4 w-full mt-4">
             <a href="/confirm" id="back-link" class="font-bold hover:underline text-center">Return to Homepage</a>
         </div>
