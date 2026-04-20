@@ -52,6 +52,7 @@ PORT=3000
 * **OAuth Integration**: Adding Google and GitHub authentication to simplify the login process for users.
 * **Modern framework**: Using a modern front-end framework like React to ensure high-performance Virtual DOM
 * **Real-time Notifications**: Implementing WebSockets (Socket.io) to provide instant updates on payment status and order processing.
+* **Subscription Management**: Adding a dedicated dashboard for users to upgrade, downgrade, or cancel their active subscriptions directly via Stripe Subscriptions.
   
 # Documentation & resources
 * [TailwindCSS documentation](https://tailwindcss.com/)
